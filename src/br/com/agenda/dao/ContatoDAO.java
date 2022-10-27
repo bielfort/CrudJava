@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContatoDAO {
+    public Contato[] getContatos;
 
     /*
      * CRUD
@@ -59,18 +60,19 @@ public class ContatoDAO {
         }
     }
 
-    public List<Contato> getContatos;{
+    public List<Contato> getContatos(){
 
         String sql = "SELECT * FROM contatos";
 
-        List<Contato> contatos = new ArrayList<Contato>();
 
         Connection conn = null;
         PreparedStatement pstm = null;
         // classe que vai recuperar os dados do banco. ****SELECT*****
         ResultSet rset = null;
 
+        List<Contato> contatos = null;
         try {
+            contatos = new ArrayList<Contato>();
             conn = ConnectionFactory.createConnectionToMySQL();
 
             pstm = (PreparedStatement) conn.prepareStatement(sql);
@@ -78,6 +80,7 @@ public class ContatoDAO {
             rset = pstm.executeQuery();
 
             while (rset.next()) {
+
                 Contato contato = new Contato();
 
                 //Recuperar o id
@@ -91,28 +94,34 @@ public class ContatoDAO {
 
                 contatos.add(contato);
 
+
             }
-        }catch (Exception e){
+
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-          try {
-            if(rset!=null) {
-                rset.close();
+        } finally {
+            try {
+                if (rset != null) {
+                    rset.close();
+                }
+
+                if (pstm != null) {
+                    pstm.close();
+                }
+
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-            if (pstm!=null){
-                pstm.close();
-            }
-
-            if(conn!=null){
-                conn.close();
-            }
-          }catch(Exception e) {
-              e.printStackTrace();
-          }
         }
+
         return contatos;
+
     }
+
 }
 
 

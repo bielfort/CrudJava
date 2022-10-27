@@ -19,7 +19,10 @@ public class Main {
 
         //visualização dos registros do banco de dados TODOS
 
+        for(Contato c : contatoDao.getContatos) {
+            System.out.println("Contato: "+c.getNome());
 
+        }
 
     }
 }
